@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/welcome")
 public class WelcomeController {
 
     @GetMapping(path = "")
-    public final String root() {
+    public final String welcome() {
         return "Welcome to Spring";
     }
 
