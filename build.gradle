@@ -13,6 +13,11 @@ application {
 	mainClass = 'hexlet.code.app.AppApplication'
 }
 
+compileJava {
+	options.release = 17
+	options.encoding = 'UTF-8'
+}
+
 repositories {
 	mavenCentral()
 	maven { url 'https://repo.spring.io/milestone' }
