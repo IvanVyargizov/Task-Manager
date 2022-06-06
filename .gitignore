@@ -7,6 +7,7 @@ build/
 
 **/logs/
 *.db
+*.log
 
 ### STS ###
 .apt_generated
