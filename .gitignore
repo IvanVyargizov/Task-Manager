@@ -9,6 +9,10 @@ build/
 *.db
 *.log
 
+node/
+fronetend/build/
+frontend/node_modules/
+
 ### STS ###
 .apt_generated
 .classpath
