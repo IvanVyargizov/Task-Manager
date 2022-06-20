@@ -1,1 +1,1 @@
-web java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/*.jar --spring.profiles.active=prod
+web: sh build/install/app/bin/app
