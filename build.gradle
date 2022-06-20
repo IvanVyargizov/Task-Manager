@@ -159,6 +159,10 @@ liquibase {
 task stage(dependsOn: [clean, installDist])
 installDist.mustRunAfter clean
 
+jar {
+    enabled = false
+}
+
 sourceSets {
     main {
         java {
