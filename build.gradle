@@ -75,7 +75,7 @@ dependencies {
 
 wrapper {
     gradleVersion = '7.3'
-    distributionType = Wrapper.DistributionType.ALL
+    distributionType = Wrapper.DistributionType.BIN
 }
 
 compileJava {
@@ -157,9 +157,6 @@ liquibase {
 
 // Таска нужная heroku для деплоя
 task stage(dependsOn: [clean, installDist])
-jar {
-    baseName = 'app-1.0-SNAPSHOT'
-}
 installDist.mustRunAfter clean
 
 sourceSets {
