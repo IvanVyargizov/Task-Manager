@@ -47,7 +47,7 @@ public class Task {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "task_status_id")
+    @JoinColumn(name = "tasks_status_id")
     private TaskStatus taskStatus;
 
     @NotNull
@@ -63,8 +63,8 @@ public class Task {
     private Date createdAt;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "task_labels",
-            joinColumns = @JoinColumn(name = "task_id"),
+    @JoinTable(name = "tasks_labels",
+            joinColumns = @JoinColumn(name = "tasks_id"),
             inverseJoinColumns = @JoinColumn(name = "labels_id"))
     @Builder.Default
     private Set<Label> labels = new LinkedHashSet<>();
