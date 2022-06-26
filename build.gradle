@@ -73,10 +73,10 @@ dependencies {
     )
 }
 
-//wrapper {
-//    gradleVersion = '7.3'
-//    distributionType = Wrapper.DistributionType.BIN
-//}
+wrapper {
+    gradleVersion = '7.3'
+    distributionType = Wrapper.DistributionType.BIN
+}
 
 compileJava {
     options.release = 17
