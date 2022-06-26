@@ -15,6 +15,11 @@
         </createTable>
     </changeSet>
     <changeSet author="vyargizov (generated)" id="1656269132929-2">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="task_statuses"/>
+            </not>
+        </preConditions>
         <createTable tableName="task_statuses">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="task_statusesPK"/>
@@ -24,6 +29,11 @@
         </createTable>
     </changeSet>
     <changeSet author="vyargizov (generated)" id="1656269132929-3">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="tasks"/>
+            </not>
+        </preConditions>
         <createTable tableName="tasks">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="tasksPK"/>
@@ -37,6 +47,11 @@
         </createTable>
     </changeSet>
     <changeSet author="vyargizov (generated)" id="1656269132929-4">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="tasks_labels"/>
+            </not>
+        </preConditions>
         <createTable tableName="tasks_labels">
             <column name="tasks_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
@@ -47,6 +62,11 @@
         </createTable>
     </changeSet>
     <changeSet author="vyargizov (generated)" id="1656269132929-5">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
         <createTable tableName="users">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="usersPK"/>
