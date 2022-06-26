@@ -1,18 +1,37 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <changeSet author="adm134 (generated)" id="1643884014812-1">
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet author="vyargizov (generated)" id="1656261675170-1">
         <createTable tableName="labels">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="labelsPK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="labelsPK"/>
             </column>
             <column name="created_at" type="TIMESTAMP"/>
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="adm134 (generated)" id="1643884014812-2">
-        <createTable tableName="task">
+    <changeSet author="vyargizov (generated)" id="1656261675170-2">
+        <createTable tableName="task_labels">
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="labels_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="vyargizov (generated)" id="1656261675170-3">
+        <createTable tableName="task_statuses">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="taskPK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="task_statusesPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="vyargizov (generated)" id="1656261675170-4">
+        <createTable tableName="tasks">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="tasksPK"/>
             </column>
             <column name="created_at" type="TIMESTAMP"/>
             <column name="description" type="VARCHAR(255)"/>
@@ -22,29 +41,10 @@
             <column name="task_status_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="adm134 (generated)" id="1643884014812-3">
-        <createTable tableName="task_labels">
-            <column name="task_id" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="labels_id" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="adm134 (generated)" id="1643884014812-4">
-        <createTable tableName="task_status">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="task_statusPK"/>
-            </column>
-            <column name="created_at" type="TIMESTAMP"/>
-            <column name="name" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="adm134 (generated)" id="1643884014812-5">
+    <changeSet author="vyargizov (generated)" id="1656261675170-5">
         <createTable tableName="users">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="usersPK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="usersPK"/>
             </column>
             <column name="created_at" type="TIMESTAMP"/>
             <column name="email" type="VARCHAR(255)"/>
@@ -53,19 +53,22 @@
             <column name="password" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="adm134 (generated)" id="1643884014812-6">
-        <addForeignKeyConstraint baseColumnNames="task_status_id" baseTableName="task" constraintName="FK39t114vuu54mh3wqt50wc2vq4" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task_status" validate="true"/>
+    <changeSet author="vyargizov (generated)" id="1656261675170-6">
+        <addUniqueConstraint columnNames="email" constraintName="UC_USERSEMAIL_COL" tableName="users"/>
     </changeSet>
-    <changeSet author="adm134 (generated)" id="1643884014812-7">
-        <addForeignKeyConstraint baseColumnNames="executor_id" baseTableName="task" constraintName="FK60p5enwpfg7w3pnor96m0t931" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    <changeSet author="vyargizov (generated)" id="1656261675170-7">
+        <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="task_labels" constraintName="FK7wi3dfqb8gx9kiysuy980sbus" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="tasks" validate="true"/>
     </changeSet>
-    <changeSet author="adm134 (generated)" id="1643884014812-8">
+    <changeSet author="vyargizov (generated)" id="1656261675170-8">
+        <addForeignKeyConstraint baseColumnNames="task_status_id" baseTableName="tasks" constraintName="FK7xndk7y2uk29wdu734xyutbqe" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task_statuses" validate="true"/>
+    </changeSet>
+    <changeSet author="vyargizov (generated)" id="1656261675170-9">
+        <addForeignKeyConstraint baseColumnNames="executor_id" baseTableName="tasks" constraintName="FKbrg922bkqn5m7212jsqjg6ioe" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="vyargizov (generated)" id="1656261675170-10">
         <addForeignKeyConstraint baseColumnNames="labels_id" baseTableName="task_labels" constraintName="FKdkh6frab4lj03hr8pe6oe6ohp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="labels" validate="true"/>
     </changeSet>
-    <changeSet author="adm134 (generated)" id="1643884014812-9">
-        <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="task_labels" constraintName="FKia1qqvbp6d1xw3sod3xw1xpye" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="task" validate="true"/>
-    </changeSet>
-    <changeSet author="adm134 (generated)" id="1643884014812-10">
-        <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="task" constraintName="FKnu4tbtolc8avjgstax6sk0woe" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    <changeSet author="vyargizov (generated)" id="1656261675170-11">
+        <addForeignKeyConstraint baseColumnNames="author_id" baseTableName="tasks" constraintName="FKhods8r8oyyx7tuj3c91ki2sk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
 </databaseChangeLog>
