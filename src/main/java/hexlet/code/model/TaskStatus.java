@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "taskStatuses")
+@Table(name = "task_statuses")
 public class TaskStatus {
 
     @Id
