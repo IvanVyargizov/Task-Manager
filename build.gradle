@@ -168,6 +168,9 @@ sourceSets {
     }
 }
 
+// Без указания пути, checkstyle проверят и выдает ошибки
+// в автоматически сгенерированных классах QLabel, QTask, QTaskStatus, QUser,
+// в директории build/generated/sources/annotationProcessor/java/main/hexlet/code/model
 checkstyleMain {
     source ='src/main/java'
 }
