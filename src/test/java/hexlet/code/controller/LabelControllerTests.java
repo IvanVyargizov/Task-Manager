@@ -47,9 +47,6 @@ public class LabelControllerTests {
     @Autowired
     private TestUtils utils;
 
-    public LabelControllerTests() {
-    }
-
     @BeforeEach
     public void createUser() throws Exception {
         utils.tearDown();

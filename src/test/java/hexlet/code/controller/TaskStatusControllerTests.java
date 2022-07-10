@@ -47,9 +47,6 @@ public class TaskStatusControllerTests {
     @Autowired
     private TestUtils utils;
 
-    public TaskStatusControllerTests() {
-    }
-
     @BeforeEach
     public void createUser() throws Exception {
         utils.tearDown();

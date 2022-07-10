@@ -52,9 +52,6 @@ public class UserControllerTests {
     @Autowired
     private TestUtils utils;
 
-    public UserControllerTests() {
-    }
-
     @BeforeEach
     @AfterEach
     public void clear() {

@@ -42,6 +42,24 @@ public class TestUtils {
     public static final String TEST_TASK_DESCRIPTION = "Task description";
     public static final String TEST_TASK_DESCRIPTION_2 = "New task description";
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
+    private TaskStatusRepository taskStatusRepository;
+
+    @Autowired
+    private LabelRepository labelRepository;
+
+    @Autowired
+    private JWTHelper jwtHelper;
+
+    @Autowired
+    private MockMvc mockMvc;
+
     private final UserDto testRegistrationDto = new UserDto(
             TEST_USERNAME,
             "fname",
@@ -69,24 +87,6 @@ public class TestUtils {
         return testRegistrationDto;
     }
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private TaskRepository taskRepository;
-
-    @Autowired
-    private TaskStatusRepository taskStatusRepository;
-
-    @Autowired
-    private LabelRepository labelRepository;
-
-    @Autowired
-    private JWTHelper jwtHelper;
-
     public void tearDown() {
         labelRepository.deleteAll();
         taskRepository.deleteAll();
@@ -109,7 +109,6 @@ public class TestUtils {
     public ResultActions createDefaultTask() throws Exception {
         return createTask(testCreateTaskDto);
     }
-
 
     public ResultActions createTask(final TaskDto dto) throws Exception {
         final var request = post(TASK_CONTROLLER_PATH)
