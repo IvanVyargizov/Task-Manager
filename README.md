@@ -10,7 +10,10 @@
 - MVC-architecture
 - Spring Boot
 - Spring Security
-- Spring Data JPA  
+- Spring Data JPA
+- Lombok
+- PostgreSQL
+- H2
 - Liquibase
 - [Swagger](https://java-project-lvl5-vyargizov.herokuapp.com/swagger-ui.html)
 - Deploy on Heroku
