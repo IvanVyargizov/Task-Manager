@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,6 +28,7 @@ public class TaskStatus {
 
     @NotBlank
     @Size(min = 1, max = 100)
+    @Column(unique = true)
     private String name;
 
     @CreationTimestamp
