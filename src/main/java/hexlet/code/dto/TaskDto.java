@@ -15,7 +15,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class TaskDto {
 
-    @NotNull
     @NotBlank
     @Size(min = 1)
     private String name;
@@ -24,6 +23,7 @@ public class TaskDto {
 
     private Long executorId;
 
+    @NotNull
     private Long taskStatusId;
 
     private Set<Long> labelIds = new HashSet<>();
