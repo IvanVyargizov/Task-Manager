@@ -10,9 +10,10 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,19 +21,14 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
-    @Autowired
     private final TaskRepository taskRepository;
 
-    @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
     private final TaskStatusRepository taskStatusRepository;
 
-    @Autowired
     private final LabelRepository labelRepository;
 
-    @Autowired
     private final UserService userService;
 
     @Override
@@ -50,19 +46,11 @@ public class TaskServiceImpl implements TaskService {
 
     private void merge(final Task task, final TaskDto postDto) {
         final Task newTask = fromDto(postDto);
-        if (newTask.getName() != null) {
-            task.setName(newTask.getName());
-        }
-        if (newTask.getDescription() != null) {
-            task.setDescription(newTask.getDescription());
-        }
-        if (newTask.getExecutor() != null) {
-            task.setExecutor(newTask.getExecutor());
-        }
-        if (newTask.getTaskStatus() != null) {
-            task.setTaskStatus(newTask.getTaskStatus());
-        }
 
+        task.setName(newTask.getName());
+        task.setDescription(newTask.getDescription());
+        task.setExecutor(newTask.getExecutor());
+        task.setTaskStatus(newTask.getTaskStatus());
     }
 
     private Task fromDto(final TaskDto dto) {
@@ -74,19 +62,21 @@ public class TaskServiceImpl implements TaskService {
         if (dto.getExecutorId() != null) {
             executor = userRepository.findById(dto.getExecutorId()).orElse(null);
         }
-        Set<Label> labelSet = null;
-        if (dto.getLabelIds() != null) {
-            labelSet = dto.getLabelIds().stream()
-                    .map((x) -> labelRepository.findById(x).get())
-                    .collect(Collectors.toSet());
-        }
+
+        final Set<Label> labels = Optional.ofNullable(dto.getLabelIds())
+                .orElse(Set.of())
+                .stream()
+                .filter(Objects::nonNull)
+                .map((labelId) -> labelRepository.findById(labelId).get())
+                .collect(Collectors.toSet());
+
         return Task.builder()
                 .author(author)
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .taskStatus(taskStatus)
                 .executor(executor)
-                .labels(labelSet)
+                .labels(labels)
                 .build();
     }
 
