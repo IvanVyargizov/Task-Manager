@@ -3,11 +3,13 @@ package hexlet.code.controller;
 import hexlet.code.dto.TaskStatusDto;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskStatusRepository;
+import hexlet.code.service.TaskStatusService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import java.util.List;
 import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
 
+@SecurityRequirement(name = "javainuseapi")
 @AllArgsConstructor
 @RestController
 @RequestMapping("${base-url}" + TASK_STATUS_CONTROLLER_PATH)
@@ -34,18 +37,16 @@ public class TaskStatusController {
     public static final String ID = "/{id}";
 
     private final TaskStatusRepository taskStatusRepository;
+    private final TaskStatusService taskStatusService;
 
 
     @Operation(summary = "Create new status")
     @ApiResponse(responseCode = "201", description = "Status created")
     @PostMapping
     @ResponseStatus(CREATED)
-    public TaskStatus registerNew(@RequestBody @Valid final TaskStatusDto dto) {
-        TaskStatus taskStatus = new TaskStatus();
-        taskStatus.setName(dto.getName());
-        return taskStatusRepository.save(taskStatus);
+    public TaskStatus createNewTaskStatus(@RequestBody @Valid final TaskStatusDto dto) {
+        return taskStatusService.createNewTaskStatus(dto);
     }
-
 
     @ApiResponses(@ApiResponse(responseCode = "200", content =
     @Content(schema = @Schema(implementation = TaskStatus.class))
@@ -57,17 +58,22 @@ public class TaskStatusController {
                 .toList();
     }
 
-    @ApiResponses(@ApiResponse(responseCode = "200"))
+    @Operation(summary = "Get state by Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "State found"),
+            @ApiResponse(responseCode = "404", description = "State with that id not found")
+    })
     @GetMapping(ID)
     public TaskStatus getTaskStatusById(@PathVariable final Long id) {
         return taskStatusRepository.findById(id).get();
     }
 
+    @Operation(summary = "Update task status")
+    @ApiResponse(responseCode = "200", description = "Task status updated")
     @PutMapping(ID)
-    public TaskStatus update(@PathVariable final long id, @RequestBody @Valid final TaskStatusDto dto) {
-        final TaskStatus taskStatusToUpdate = taskStatusRepository.findById(id).get();
-        taskStatusToUpdate.setName(dto.getName());
-        return taskStatusRepository.save(taskStatusToUpdate);
+    public TaskStatus update(@PathVariable final long id,
+                             @RequestBody @Valid final TaskStatusDto dto) {
+        return taskStatusService.updateTaskStatus(id, dto);
     }
 
     @DeleteMapping(ID)
