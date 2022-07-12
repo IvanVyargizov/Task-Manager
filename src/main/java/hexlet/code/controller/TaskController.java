@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,11 +47,7 @@ public class TaskController {
 
     @Operation(summary = "Get All tasks")
     @GetMapping
-    public Iterable<Task> getAll(@QuerydslPredicate(root = Task.class) Predicate predicate,
-                                 @RequestParam(required = false) Long taskStatus,
-                                 @RequestParam(required = false) Long executorId,
-                                 @RequestParam(required = false) Long labels,
-                                 @RequestParam(required = false) String authorId) {
+    public Iterable<Task> getAll(@QuerydslPredicate(root = Task.class) Predicate predicate) {
         return taskRepository.findAll(predicate);
     }
 

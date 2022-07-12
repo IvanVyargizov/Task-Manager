@@ -34,4 +34,8 @@ public class Label {
     @CreationTimestamp
     private Date createdAt;
 
+    public Label(final Long id) {
+        this.id = id;
+    }
+
 }
