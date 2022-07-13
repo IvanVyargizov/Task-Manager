@@ -5,7 +5,10 @@ import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
+import hexlet.code.repository.TaskStatusRepository;
+import hexlet.code.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,12 @@ import java.util.stream.Collectors;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
+
+    private final TaskStatusRepository taskStatusRepository;
+
+    private final LabelRepository labelRepository;
+
+    private final UserRepository userRepository;
 
     private final UserService userService;
 
@@ -45,31 +54,57 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private Task fromDto(final TaskDto dto) {
+
         final User author = userService.getCurrentUser();
 
-        final User executor = Optional.ofNullable(dto.getExecutorId())
-                .map(User::new)
-                .orElse(null);
+        final TaskStatus taskStatus = this.taskStatusRepository.findById(dto.getTaskStatusId()).get();
 
-        final TaskStatus taskStatus = Optional.ofNullable(dto.getTaskStatusId())
-                .map(TaskStatus::new)
-                .orElse(null);
+        User executor = null;
+        if (dto.getExecutorId() != null) {
+            executor = userRepository.findById(dto.getExecutorId()).orElse(null);
+        }
 
         final Set<Label> labels = Optional.ofNullable(dto.getLabelIds())
                 .orElse(Set.of())
                 .stream()
                 .filter(Objects::nonNull)
-                .map(Label::new)
+                .map((labelId) -> labelRepository.findById(labelId).get())
                 .collect(Collectors.toSet());
 
         return Task.builder()
                 .author(author)
-                .executor(executor)
-                .taskStatus(taskStatus)
-                .labels(labels)
                 .name(dto.getName())
                 .description(dto.getDescription())
+                .taskStatus(taskStatus)
+                .executor(executor)
+                .labels(labels)
                 .build();
+
+//        final User author = userService.getCurrentUser();
+//
+//        final User executor = Optional.ofNullable(dto.getExecutorId())
+//                .map(User::new)
+//                .orElse(null);
+//
+//        final TaskStatus taskStatus = Optional.ofNullable(dto.getTaskStatusId())
+//                .map(TaskStatus::new)
+//                .orElse(null);
+//
+//        final Set<Label> labels = Optional.ofNullable(dto.getLabelIds())
+//                .orElse(Set.of())
+//                .stream()
+//                .filter(Objects::nonNull)
+//                .map(Label::new)
+//                .collect(Collectors.toSet());
+//
+//        return Task.builder()
+//                .author(author)
+//                .executor(executor)
+//                .taskStatus(taskStatus)
+//                .labels(labels)
+//                .name(dto.getName())
+//                .description(dto.getDescription())
+//                .build();
     }
 
 }
