@@ -41,6 +41,7 @@ public class TestUtils {
     public static final String TEST_TASK_NAME_2 = "New task";
     public static final String TEST_TASK_DESCRIPTION = "Task description";
     public static final String TEST_TASK_DESCRIPTION_2 = "New task description";
+    public static final Long TASK_STATUS_ID = 1L;
 
     @Autowired
     private UserRepository userRepository;
@@ -70,8 +71,8 @@ public class TestUtils {
     private final TaskDto testCreateTaskDto = new TaskDto(
             TEST_TASK_NAME,
             TEST_TASK_DESCRIPTION,
-            1L,
-            1L,
+            null,
+            TASK_STATUS_ID,
             null
     );
 

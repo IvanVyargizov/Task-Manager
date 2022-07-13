@@ -22,6 +22,7 @@ import java.util.List;
 import static hexlet.code.config.ConfigTest.TEST_PROFILE;
 import static hexlet.code.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.controller.TaskController.ID;
+import static hexlet.code.utils.TestUtils.TASK_STATUS_ID;
 import static hexlet.code.utils.TestUtils.TEST_TASK_DESCRIPTION_2;
 import static hexlet.code.utils.TestUtils.TEST_TASK_NAME_2;
 import static hexlet.code.utils.TestUtils.TEST_USERNAME;
@@ -97,8 +98,8 @@ public class TaskControllerTests {
         final var taskDto = new TaskDto(
                 TEST_TASK_NAME_2,
                 TEST_TASK_DESCRIPTION_2,
-                1L,
-                1L,
+                null,
+                TASK_STATUS_ID,
                 null
         );
         final var updateRequest = put(TASK_CONTROLLER_PATH + TaskStatusController.ID, statusId)
@@ -123,63 +124,5 @@ public class TaskControllerTests {
     public void clear() {
         utils.tearDown();
     }
-
-//    @Test
-//    public void crudTask() throws Exception {
-//        //create
-//        utils.tearDown();
-//        assertEquals(0, taskRepository.count());
-//        utils.regDefaultUser();
-//        utils.createDefaultTaskStatus();
-//        utils.createDefaultTask().andExpect(status().isCreated());
-//        assertEquals(1, taskRepository.count());
-//
-//        //getAll
-//        final var response1 = utils.perform(get(TASK_CONTROLLER_PATH), TEST_USERNAME)
-//                .andExpect(status().isOk())
-//                .andReturn()
-//                .getResponse();
-//        final List<Task> tasks = fromJson(response1.getContentAsString(), new TypeReference<>() {
-//        });
-//        assertThat(tasks).hasSize(1);
-//
-//        //getById
-//        final Task expectedTask = taskRepository.findAll().get(0);
-//        final var response2 = utils.perform(
-//                get(TASK_CONTROLLER_PATH + ID, expectedTask.getId()), TEST_USERNAME)
-//                .andExpect(status().isOk())
-//                .andReturn()
-//                .getResponse();
-//        final Task task = fromJson(response2.getContentAsString(), new TypeReference<>() {
-//        });
-//        assertEquals(expectedTask.getId(), task.getId());
-//        assertEquals(expectedTask.getName(), task.getName());
-//        assertEquals(expectedTask.getDescription(), task.getDescription());
-//        assertEquals(expectedTask.getAuthor().getEmail(), task.getAuthor().getEmail());
-//        assertEquals(expectedTask.getTaskStatus().getId(), task.getTaskStatus().getId());
-//
-//        //update
-//        final Long statusId = taskRepository.findAll().get(0).getId();
-//        final var taskDto = new TaskDto(
-//                TEST_TASK_NAME_2,
-//                TEST_TASK_DESCRIPTION_2,
-//                1L,
-//                1L,
-//                null
-//        );
-//        final var updateRequest = put(TASK_CONTROLLER_PATH + TaskStatusController.ID, statusId)
-//                .content(asJson(taskDto))
-//                .contentType(APPLICATION_JSON);
-//        utils.perform(updateRequest, TEST_USERNAME).andExpect(status().isOk());
-//        assertTrue(taskRepository.existsById(statusId));
-//        assertEquals(taskRepository.findById(statusId).get().getName(), TEST_TASK_NAME_2);
-//        assertEquals(taskRepository.findById(statusId).get().getDescription(), TEST_TASK_DESCRIPTION_2);
-//        assertEquals(1, taskRepository.count());
-//
-//        //deleteTask
-//        utils.perform(delete(TASK_CONTROLLER_PATH + ID, statusId), TEST_USERNAME)
-//                .andExpect(status().isOk());
-//        assertEquals(0, taskRepository.count());
-//    }
 
 }

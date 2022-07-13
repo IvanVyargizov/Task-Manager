@@ -47,12 +47,12 @@ public class TaskServiceImpl implements TaskService {
     private Task fromDto(final TaskDto dto) {
         final User author = userService.getCurrentUser();
 
-        final TaskStatus taskStatus = Optional.ofNullable(dto.getTaskStatusId())
-                .map(TaskStatus::new)
-                .orElse(null);
-
         final User executor = Optional.ofNullable(dto.getExecutorId())
                 .map(User::new)
+                .orElse(null);
+
+        final TaskStatus taskStatus = Optional.ofNullable(dto.getTaskStatusId())
+                .map(TaskStatus::new)
                 .orElse(null);
 
         final Set<Label> labels = Optional.ofNullable(dto.getLabelIds())
@@ -64,11 +64,11 @@ public class TaskServiceImpl implements TaskService {
 
         return Task.builder()
                 .author(author)
+                .executor(executor)
+                .taskStatus(taskStatus)
+                .labels(labels)
                 .name(dto.getName())
                 .description(dto.getDescription())
-                .taskStatus(taskStatus)
-                .executor(executor)
-                .labels(labels)
                 .build();
     }
 
