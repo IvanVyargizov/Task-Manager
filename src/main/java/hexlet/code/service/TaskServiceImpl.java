@@ -25,8 +25,6 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskStatusRepository taskStatusRepository;
 
-    private final UserRepository userRepository;
-
     private final LabelRepository labelRepository;
 
     private final UserService userService;
@@ -58,7 +56,7 @@ public class TaskServiceImpl implements TaskService {
         final User author = userService.getCurrentUser();
 
         final User executor = Optional.ofNullable(dto.getExecutorId())
-                .map((executorId) -> userRepository.findById(executorId).get())
+                .map(User::new)
                 .orElse(null);
 
         final TaskStatus taskStatus = Optional.ofNullable(dto.getTaskStatusId())
@@ -69,7 +67,7 @@ public class TaskServiceImpl implements TaskService {
                 .orElse(Set.of())
                 .stream()
                 .filter(Objects::nonNull)
-                .map(Label::new)
+                .map(labelId -> labelRepository.findById(labelId).get())
                 .collect(Collectors.toSet());
 
         return Task.builder()
