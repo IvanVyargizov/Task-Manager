@@ -52,6 +52,7 @@ public class User {
         this.firstName = getFirstName();
         this.lastName = getLastName();
         this.password = getPassword();
+        this.createdAt = getCreatedAt();
         this.id = id;
     }
 
