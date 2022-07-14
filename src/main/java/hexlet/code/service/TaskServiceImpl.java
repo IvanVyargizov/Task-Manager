@@ -56,8 +56,8 @@ public class TaskServiceImpl implements TaskService {
                 .map(TaskStatus::new)
                 .orElse(null);
 
-        final Set<Label> labels = Optional.of(dto.getLabelIds())
-                .orElse(null)
+        final Set<Label> labels = Optional.ofNullable(dto.getLabelIds())
+                .orElse(Set.of())
                 .stream()
                 .filter(Objects::nonNull)
                 .map(Label::new)
@@ -69,7 +69,7 @@ public class TaskServiceImpl implements TaskService {
                 .description(dto.getDescription())
                 .taskStatus(taskStatus)
                 .executor(executor)
-                .labels(labels)
+                .labels(labels.isEmpty() ? null : labels)
                 .build();
 
     }
