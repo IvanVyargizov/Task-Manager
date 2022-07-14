@@ -48,10 +48,6 @@ public class User {
     private Date createdAt;
 
     public User(final Long id) {
-        this.email = getEmail();
-        this.firstName = getFirstName();
-        this.lastName = getLastName();
-        this.password = getPassword();
         this.id = id;
     }
 
