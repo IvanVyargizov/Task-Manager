@@ -5,6 +5,7 @@ import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,8 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
 
     private final TaskStatusRepository taskStatusRepository;
+
+    private final LabelRepository labelRepository;
 
     private final UserService userService;
 
@@ -63,7 +66,7 @@ public class TaskServiceImpl implements TaskService {
                 .orElse(Set.of())
                 .stream()
                 .filter(Objects::nonNull)
-                .map(Label::new)
+                .map(labelId -> labelRepository.findById(labelId).get())
                 .collect(Collectors.toSet());
 
         return Task.builder()

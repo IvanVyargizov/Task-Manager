@@ -35,7 +35,6 @@ public class TaskStatus {
     private Date createdAt;
 
     public TaskStatus(final Long id) {
-        this.name = getName();
         this.id = id;
     }
 
