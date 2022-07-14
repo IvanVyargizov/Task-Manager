@@ -6,6 +6,7 @@ import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
 import hexlet.code.repository.TaskRepository;
+import hexlet.code.repository.TaskStatusRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
+
+    private final TaskStatusRepository taskStatusRepository;
 
     private final UserService userService;
 
@@ -53,7 +56,7 @@ public class TaskServiceImpl implements TaskService {
                 .orElse(null);
 
         final TaskStatus taskStatus = Optional.ofNullable(dto.getTaskStatusId())
-                .map(TaskStatus::new)
+                .map(taskStatusId -> taskStatusRepository.findById(taskStatusId).get())
                 .orElse(null);
 
         final Set<Label> labels = Optional.ofNullable(dto.getLabelIds())

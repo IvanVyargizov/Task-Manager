@@ -36,7 +36,6 @@ public class Label {
 
     public Label(final Long id) {
         this.name = getName();
-        this.createdAt = getCreatedAt();
         this.id = id;
     }
 
