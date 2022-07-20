@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class RollbarConfig {
 
     // Добавляем токен через переменные окружения
-    @Value("${ROLLBAR_TOKEN}")
+    @Value("${rollbar_token:}")
     private String rollbarToken;
 
     @Value("${spring.profiles.active}")
@@ -27,7 +27,11 @@ public class RollbarConfig {
     @Bean
     public Rollbar rollbar() {
 
-        return new Rollbar(getRollbarConfigs(rollbarToken));
+        Rollbar rollbar = new Rollbar(getRollbarConfigs(rollbarToken));
+
+        rollbar.debug("new debug msg");
+
+        return rollbar;
     }
 
     private Config getRollbarConfigs(String accessToken) {
