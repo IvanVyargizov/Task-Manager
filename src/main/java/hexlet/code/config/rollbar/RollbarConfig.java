@@ -18,7 +18,7 @@ public class RollbarConfig {
     @Value("${ROLLBAR_TOKEN}")
     private String rollbarToken;
 
-    @Value("${spring.profiles.active:}")
+    @Value("${spring.profiles.active}")
     private String activeProfile;
 
     /**
