@@ -15,10 +15,10 @@ import org.springframework.context.annotation.Configuration;
 public class RollbarConfig {
 
     // Добавляем токен через переменные окружения
-    @Value("${ROLLBAR_TOKEN:}")
+    @Value("${ROLLBAR_TOKEN}")
     private String rollbarToken;
 
-    @Value("${spring.profiles.active:}")
+    @Value("${spring.profiles.active}")
     private String activeProfile;
 
     /**
