@@ -21,15 +21,10 @@ public class RollbarConfig {
     @Value("${spring.profiles.active}")
     private String activeProfile;
 
-    /**
-     * Register a Rollbar bean to configure App with Rollbar.
-     */
     @Bean
     public Rollbar rollbar() {
 
         Rollbar rollbar = new Rollbar(getRollbarConfigs(rollbarToken));
-
-        rollbar.debug("new debug msg");
 
         return rollbar;
     }
