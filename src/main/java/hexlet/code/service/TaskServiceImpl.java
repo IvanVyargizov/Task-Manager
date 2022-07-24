@@ -63,7 +63,7 @@ public class TaskServiceImpl implements TaskService {
                 .orElse(Set.of())
                 .stream()
                 .filter(Objects::nonNull)
-                .map(labelsId -> labelRepository.findById(labelsId).get())
+                .map(Label::new)
                 .collect(Collectors.toSet());
 
         return Task.builder()
