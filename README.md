@@ -17,3 +17,4 @@
 - Liquibase
 - [Swagger](https://java-project-lvl5-vyargizov.herokuapp.com/swagger-ui.html)
 - Deploy on Heroku
+- Rollbar
