@@ -26,7 +26,6 @@ public class Label {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank
     @Size(min = 1, max = 100)
     @Column(unique = true)
     private String name;
