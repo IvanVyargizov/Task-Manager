@@ -62,7 +62,7 @@ public class Task {
     @CreationTimestamp
     private Date createdAt;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "tasks_labels",
             joinColumns = @JoinColumn(name = "tasks_id"),
             inverseJoinColumns = @JoinColumn(name = "labels_id"))
