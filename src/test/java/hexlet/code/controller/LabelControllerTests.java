@@ -6,22 +6,24 @@ import hexlet.code.dto.LabelDto;
 import hexlet.code.model.Label;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.utils.TestUtils;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static hexlet.code.config.ConfigTest.TEST_PROFILE;
 import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
 import static hexlet.code.controller.LabelController.ID;
-import static hexlet.code.utils.TestUtils.TEST_LABEL_2;
 import static hexlet.code.utils.TestUtils.TEST_USERNAME;
 import static hexlet.code.utils.TestUtils.asJson;
 import static hexlet.code.utils.TestUtils.fromJson;
@@ -32,12 +34,14 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 @ActiveProfiles(TEST_PROFILE)
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = ConfigTest.class)
 public class LabelControllerTests {
 
@@ -47,27 +51,43 @@ public class LabelControllerTests {
     @Autowired
     private TestUtils utils;
 
-    @BeforeEach
+    @BeforeAll
     public void createUser() throws Exception {
         utils.tearDown();
         utils.regDefaultUser();
     }
 
-    @AfterEach
+    @AfterAll
     public void clear() {
         utils.tearDown();
     }
 
     @Test
-    public void createLabel() throws Exception {
+    @Order(1)
+    public void createNewLabel() throws Exception {
         assertEquals(0, labelRepository.count());
-        utils.createDefaultLabel().andExpect(status().isCreated());
+
+        final LabelDto labelToSave = new LabelDto("test label");
+
+        final var request = post(LABEL_CONTROLLER_PATH)
+                .content(asJson(labelToSave))
+                .contentType(APPLICATION_JSON);
+
+        final var response = utils.perform(request, TEST_USERNAME)
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse();
+
+        final Label savedLabel = fromJson(response.getContentAsString(), new TypeReference<>() {
+        });
+
+        assertThat(labelRepository.getById(savedLabel.getId())).isNotNull();
         assertEquals(1, labelRepository.count());
     }
 
     @Test
+    @Order(2)
     public void getAllLabels() throws Exception {
-        utils.createDefaultLabel();
         final var response = utils.perform(get(LABEL_CONTROLLER_PATH), TEST_USERNAME)
                 .andExpect(status().isOk())
                 .andReturn()
@@ -80,9 +100,10 @@ public class LabelControllerTests {
     }
 
     @Test
+    @Order(3)
     public void getLabelById() throws Exception {
-        utils.createDefaultLabel();
         final Label expectedLabel = labelRepository.findAll().get(0);
+
         final var response = utils.perform(
                 get(LABEL_CONTROLLER_PATH + ID, expectedLabel.getId()), TEST_USERNAME)
                 .andExpect(status().isOk())
@@ -97,26 +118,31 @@ public class LabelControllerTests {
     }
 
     @Test
+    @Order(4)
+    @Transactional
     public void updateLabel() throws Exception {
-        utils.createDefaultLabel();
-        final Long statusId = labelRepository.findAll().get(0).getId();
-        final var labelDto = new LabelDto(TEST_LABEL_2);
+        final Long labelId = labelRepository.findAll().get(0).getId();
+        final LabelDto labelToSave = new LabelDto("new test label");
 
-        final var updateRequest = put(LABEL_CONTROLLER_PATH + ID, statusId)
-                .content(asJson(labelDto))
+        final var updateRequest = put(LABEL_CONTROLLER_PATH + ID, labelId)
+                .content(asJson(labelToSave))
                 .contentType(APPLICATION_JSON);
 
-        utils.perform(updateRequest, TEST_USERNAME).andExpect(status().isOk());
+        final var response = utils.perform(updateRequest, TEST_USERNAME)
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
 
-        assertTrue(labelRepository.existsById(statusId));
-        assertEquals(labelRepository.findById(statusId).get().getName(), TEST_LABEL_2);
-        assertEquals(1, labelRepository.count());
+        final Label savedLabel = fromJson(response.getContentAsString(), new TypeReference<>() {
+        });
 
+        assertTrue(labelRepository.existsById(labelId));
+        assertThat(labelRepository.getById(savedLabel.getId()).getName()).isEqualTo("new test label");
     }
 
     @Test
+    @Order(5)
     public void deleteLabel() throws Exception {
-        utils.createDefaultLabel();
         final Long statusId = labelRepository.findAll().get(0).getId();
         utils.perform(delete(LABEL_CONTROLLER_PATH + ID, statusId), TEST_USERNAME)
                 .andExpect(status().isOk());
@@ -125,5 +151,3 @@ public class LabelControllerTests {
     }
 
 }
-
-

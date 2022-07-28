@@ -140,7 +140,7 @@ public class UserControllerTests {
     public void updateUser() throws Exception {
         utils.regDefaultUser();
 
-        final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
+        final Long userId = userRepository.findByEmail(TEST_USERNAME).orElseThrow().getId();
 
         final var userDto = new UserDto(TEST_USERNAME_2, "new name", "new last name", "new pwd");
 
@@ -159,7 +159,7 @@ public class UserControllerTests {
     public void deleteUser() throws Exception {
         utils.regDefaultUser();
 
-        final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
+        final Long userId = userRepository.findByEmail(TEST_USERNAME).orElseThrow().getId();
 
         utils.perform(delete(USER_CONTROLLER_PATH + ID, userId), TEST_USERNAME)
                 .andExpect(status().isOk());
@@ -177,13 +177,12 @@ public class UserControllerTests {
                 "pwd"
         ));
 
-        final Long userId = userRepository.findByEmail(TEST_USERNAME).get().getId();
+        final Long userId = userRepository.findByEmail(TEST_USERNAME).orElseThrow().getId();
 
         utils.perform(delete(USER_CONTROLLER_PATH + ID, userId), TEST_USERNAME_2)
                 .andExpect(status().isForbidden());
 
         assertEquals(2, userRepository.count());
     }
-
 
 }
