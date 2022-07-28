@@ -4,9 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.component.JWTHelper;
-import hexlet.code.dto.LabelDto;
-import hexlet.code.dto.TaskDto;
-import hexlet.code.dto.TaskStatusDto;
 import hexlet.code.dto.UserDto;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
@@ -20,9 +17,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.Map;
 
-import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
-import static hexlet.code.controller.TaskController.TASK_CONTROLLER_PATH;
-import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static hexlet.code.controller.UserController.USER_CONTROLLER_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -33,14 +27,6 @@ public class TestUtils {
 
     public static final String TEST_USERNAME = "email@email.com";
     public static final String TEST_USERNAME_2 = "email2@email.com";
-    public static final String TEST_TASK_STATUS = "Name";
-    public static final String TEST_TASK_STATUS_2 = "New name";
-    public static final String TEST_LABEL = "Label";
-    public static final String TEST_LABEL_2 = "New label";
-    public static final String TEST_TASK_NAME = "Task";
-    public static final String TEST_TASK_NAME_2 = "New task";
-    public static final String TEST_TASK_DESCRIPTION = "Task description";
-    public static final String TEST_TASK_DESCRIPTION_2 = "New task description";
     public static final Long TASK_STATUS_ID = 1L;
 
     @Autowired
@@ -61,38 +47,22 @@ public class TestUtils {
     @Autowired
     private MockMvc mockMvc;
 
-    private final UserDto testRegistrationDto = new UserDto(
-            TEST_USERNAME,
-            "fname",
-            "lname",
-            "pwd"
-    );
-
-    private final TaskDto testCreateTaskDto = new TaskDto(
-            TEST_TASK_NAME,
-            TEST_TASK_DESCRIPTION,
-            null,
-            TASK_STATUS_ID,
-            null
-    );
-
-    private final TaskStatusDto testCreateTaskStatusDto = new TaskStatusDto(
-            TEST_TASK_STATUS
-    );
-
-    private final LabelDto testCreateLabelDto = new LabelDto(
-            TEST_LABEL
-    );
-
-    public UserDto getTestRegistrationDto() {
-        return testRegistrationDto;
-    }
-
     public void tearDown() {
         labelRepository.deleteAll();
         taskRepository.deleteAll();
         taskStatusRepository.deleteAll();
         userRepository.deleteAll();
+    }
+
+    private final UserDto testRegistrationDto = new UserDto(
+            TEST_USERNAME,
+            "first name",
+            "last name",
+            "pwd"
+    );
+
+    public UserDto getTestRegistrationDto() {
+        return testRegistrationDto;
     }
 
     public ResultActions regDefaultUser() throws Exception {
@@ -105,42 +75,6 @@ public class TestUtils {
                 .contentType(APPLICATION_JSON);
 
         return perform(request);
-    }
-
-    public ResultActions createDefaultTask() throws Exception {
-        return createTask(testCreateTaskDto);
-    }
-
-    public ResultActions createTask(final TaskDto dto) throws Exception {
-        final var request = post(TASK_CONTROLLER_PATH)
-                .content(asJson(dto))
-                .contentType(APPLICATION_JSON);
-
-        return perform(request, TEST_USERNAME);
-    }
-
-    public ResultActions createDefaultTaskStatus() throws Exception {
-        return createTaskStatus(testCreateTaskStatusDto);
-    }
-
-    public ResultActions createTaskStatus(final TaskStatusDto dto) throws Exception {
-        final var request = post(TASK_STATUS_CONTROLLER_PATH)
-                .content(asJson(dto))
-                .contentType(APPLICATION_JSON);
-
-        return perform(request, TEST_USERNAME);
-    }
-
-    public ResultActions createDefaultLabel() throws Exception {
-        return createLabel(testCreateLabelDto);
-    }
-
-    public ResultActions createLabel(final LabelDto dto) throws Exception {
-        final var request = post(LABEL_CONTROLLER_PATH)
-                .content(asJson(dto))
-                .contentType(APPLICATION_JSON);
-
-        return perform(request, TEST_USERNAME);
     }
 
     public ResultActions perform(final MockHttpServletRequestBuilder request, final String byUser) throws Exception {
