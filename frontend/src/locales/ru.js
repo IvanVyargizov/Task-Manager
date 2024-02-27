@@ -11,9 +11,9 @@ const ru = {
     login: 'Вход',
     signup: 'Регистрация',
     welcome: {
-      title: 'Привет от Хекслета!',
-      body: 'Практические курсы по программированию',
-      buttonText: 'Узнать Больше',
+      title: 'Привет!',
+      body: '',
+      buttonText: 'Мой github',
     },
     email: 'Email',
     password: 'Пароль',
