@@ -14,8 +14,7 @@ spring:
       enabled: false
 
   datasource:
-    # https://devcenter.heroku.com/articles/connecting-to-relational-databases-on-heroku-with-java#using-the-jdbc_database_url
-    url: ${JDBC_DATABASE_URL}
+    url: ${MONGODB_URL}
 
   jpa:
     show-sql: false
