@@ -1,7 +1,7 @@
 FROM openjdk:17
-WORKDIR /
+WORKDIR /app
 COPY . .
-RUN ./gradlew build
-EXPOSE 5000
+RUN ./gradlew clean build
+EXPOSE 8080
 
-CMD ["java", "-jar", "/build/libs/app-1.0-SNAPSHOT.jar"]
+CMD ["java", "-jar", "/app/build/libs/app-1.0-SNAPSHOT.jar"]
