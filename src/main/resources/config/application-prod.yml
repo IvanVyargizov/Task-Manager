@@ -14,7 +14,7 @@ spring:
       enabled: false
 
   datasource:
-    url: ${MONGODB_URL}
+    url: ${DB_URL}
 
   jpa:
     show-sql: false
